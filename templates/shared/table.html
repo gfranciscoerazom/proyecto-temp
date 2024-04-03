@@ -1,0 +1,45 @@
+<button>
+    <a href="/{{ type }}/create/">
+        <span class="material-symbols-outlined">
+            add
+        </span>
+    </a>
+</button>
+
+{% if items|length == 0 %}
+<h1>No hay registros</h1>
+{% else %}
+<table>
+    <thead>
+        {% for key in items[0].keys() %}
+        <th>{{ key|upper|replace("_", " ") }}</th>
+        {% endfor %}
+        <th style="width: 185px;">ACCIONES</th>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            {% for value in item.values() %}
+            <td>{{ value }}</td>
+            {% endfor %}
+            <td>
+                <a href="/{{ type }}/edit/{{ item.id }}">
+                    <button>
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                    </button>
+                </a>
+                <a href="/{{ type }}/delete/{{ item.id }}">
+                    <button>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
