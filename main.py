@@ -5,14 +5,15 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Annotated
-
 import models
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
+from users import userRouter
 
 app = FastAPI()  # Crear la aplicación de FastAPI
 app.mount('/static', StaticFiles(directory='static'), name='static')
+app.include_router(userRouter.router)
 
 # Directorio de las plantillas
 templates = Jinja2Templates(directory='templates')
@@ -113,6 +114,10 @@ async def delete_user(id: int, db: db_dependency):
 @app.get('/home', response_class=HTMLResponse, tags=['admin'])
 async def home(request: Request, db: db_dependency):
     """Página principal"""
+    # Verifica que haya la cookie con la llave access_token y si no la hay redirige a la página de sign in
+    if 'access_token' not in request.cookies:
+        return RedirectResponse(url='/users/signin', status_code=303)
+
     context = {
         'request': request,
         'type': 'users',
@@ -183,12 +188,12 @@ async def create(request: Request):
     return templates.TemplateResponse('/forms/user.html', context)
 
 
-@app.post('/users/create/', response_class=HTMLResponse, tags=['admin'])
-async def create(request: Request, db: db_dependency, email: str = Form(...), password: str = Form(...), first_name: str = Form(...), last_name: str = Form(...)):
-    """Crear un usuario"""
-    db_user = models.User(email=email, password=password,
-                          first_name=first_name, last_name=last_name)
-    db.add(db_user)
-    db.commit()
+# @app.post('/users/create/', tags=['admin'])
+# async def create(request: Request, db: db_dependency, email: str = Form(...), password: str = Form(...), first_name: str = Form(...), last_name: str = Form(...)):
+#     """Crear un usuario"""
+#     db_user = models.User(email=email, password=password,
+#                           first_name=first_name, last_name=last_name)
+#     db.add(db_user)
+#     db.commit()
 
-    return RedirectResponse(url='/home', status_code=303)
+#     return RedirectResponse(url='/home', status_code=303)

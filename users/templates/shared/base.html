@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="/static/css/header.css">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="/static/assets/imgs/cool.png" alt="cool icon">
+
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <!-- crea una lista desplegable -->
+                <li>
+                    <a href="#">Dropdown</a>
+                    <ul>
+                        <li><a href="#">Usuarios</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+
+    <footer>
+        <!-- {% block footer %}{% endblock %} -->
+        <p>© 2024 - Admin</p>
+        <a href="https://www.flaticon.com/free-icons/cool" title="cool icons">Cool icons created by AomAm - Flaticon</a>
+    </footer>
+</body>
+
+</html>
